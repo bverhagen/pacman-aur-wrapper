@@ -22,3 +22,4 @@ USER awesome
 
 # Install yay AUR helper
 RUN mkdir -p /tmp/yay && cd /tmp/yay && . /etc/profile.d/perlbin.sh && curl -o PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=yay && makepkg PKGBUILD --skippgpcheck --needed --install --noconfirm --rmdeps && sudo pacman -Scc --noconfirm && rm -rf /tmp/yay
+RUN yay -S --needed --noconfirm --editor false --answerclean None --answeredit None --answerupgrade None --save
