@@ -1,5 +1,5 @@
 FROM dock0/arch
-RUN pacman -Sy --needed --noconfirm base-devel git curl sudo go && pacman -Scc --noconfirm
+RUN pacman -Sy --needed --noconfirm base-devel git curl sudo && pacman -Scc --noconfirm
 
 # Add a user to use in the docker container
 RUN groupadd -g 42 awesome && useradd -r -u 42 --create-home -g awesome awesome
@@ -21,5 +21,5 @@ RUN echo 'BUILDENV=(!distcc color !ccache !check !sign)' >> /etc/makepkg.conf
 USER awesome
 
 # Install yay AUR helper
-RUN mkdir -p /tmp/yay && cd /tmp/yay && . /etc/profile.d/perlbin.sh && curl -o PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=yay && makepkg PKGBUILD --skippgpcheck --needed --install --noconfirm --rmdeps && sudo pacman -Scc --noconfirm && rm -rf /tmp/yay
+RUN mkdir -p /tmp/yay && cd /tmp/yay && . /etc/profile.d/perlbin.sh && curl -o PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=yay-bin && makepkg PKGBUILD --skippgpcheck --needed --install --noconfirm --rmdeps && sudo pacman -Scc --noconfirm && rm -rf /tmp/yay && rm -rf /tmp/makepkg
 RUN yay -S --needed --noconfirm --editor false --answerclean None --answeredit None --answerupgrade None --save
