@@ -1,4 +1,4 @@
-FROM dock0/arch
+FROM base/archlinux
 RUN pacman -Sy --needed --noconfirm base-devel git curl sudo && pacman -Scc --noconfirm
 
 # Add a user to use in the docker container
