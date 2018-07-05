@@ -1,5 +1,5 @@
 FROM base/archlinux
-RUN pacman -Sy --needed --noconfirm base-devel git curl sudo && pacman -Scc --noconfirm
+RUN pacman -Sy --needed --noconfirm binutils pacman fakeroot git curl sudo && pacman -Scc --noconfirm
 
 # Add a user to use in the docker container
 RUN groupadd -g 42 awesome && useradd -r -u 42 --create-home -g awesome awesome
