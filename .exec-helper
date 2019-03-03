@@ -1,9 +1,16 @@
 commands:
     build: Build the container
 
+patterns:
+    TAG:
+        default-values:
+            - bverhagen/pacman-aur-wrapper:MANUAL
+
 build:
     - command-line-command
 
 command-line-command:
     build:
-        command-line: [ docker, build, .]
+        patterns:
+            - TAG
+        command-line: [ docker, build, --tag, "{TAG}", .]
