@@ -1,0 +1,9 @@
+commands:
+    build: Build the container
+
+build:
+    - command-line-command
+
+command-line-command:
+    build:
+        command-line: [ docker, build, .]
