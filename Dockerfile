@@ -1,5 +1,5 @@
 FROM archlinux/base
-RUN ln -s /usr/lib/libidn2.so.0.3.5 libidn2.so.4   # Workaround for issues with a version of the libidn2 package in Arch Linux
+RUN pacman -Syu --needed --noconfirm && pacman -Scc --noconfirm # Avoid some issues with packages. E.g. updates on dependencies from pacman itself
 RUN pacman -Sy --needed --noconfirm base-devel git curl sudo && pacman -Scc --noconfirm
 
 # Add a user to use in the docker container
