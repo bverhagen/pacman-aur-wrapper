@@ -6,6 +6,12 @@ patterns:
         default-values:
             - bverhagen/pacman-aur-wrapper:MANUAL
 
+    HELPER:
+        default-values:
+            - yay
+        short-option: a
+        long-option: helper
+
 build:
     - command-line-command
 
@@ -13,4 +19,5 @@ command-line-command:
     build:
         patterns:
             - TAG
-        command-line: [ docker, build, --tag, "{TAG}", .]
+            - HELPER
+        command-line: [ docker, build, --tag, "{TAG}", -f, "{HELPER}.Dockerfile", .]

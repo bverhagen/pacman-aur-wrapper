@@ -19,5 +19,5 @@ exec-helper build
 
 ### Using docker-build
 ```bash
-docker build --tag "pacman-aur-wrapper" .
+docker build --tag "pacman-aur-wrapper" -f <wrapper>.Dockerfile .
 ```
