@@ -5,6 +5,7 @@ This is mainly useful to be used as a base container for building other containe
 
 Currently supported AUR wrappers:
 - [Yet another Yogurt](https://github.com/Jguer/yay) or yay (default)
+- [pacaur](https://aur.archlinux.org/packages/pacaur/)
 
 ## Using the image
 By default, the root user is used when running the container. However, AUR wrappers disapprove of being ran as the root user. Most even refuse to do anything when run as the root user. This image supports the _nobody_ user to do all non-root tasks. You can run as this user using:
