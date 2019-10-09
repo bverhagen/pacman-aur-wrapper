@@ -34,3 +34,7 @@ COPY --from=build-package /tmp/yay/*.tar.xz /tmp
 RUN pushd tmp && pacman --noconfirm -U *.tar.xz
 
 RUN yay -S --needed --noconfirm --editor false --answerclean None --answeredit None --answerupgrade None --answerdiff None --save
+
+# Enable building as the nobody user
+RUN echo "nobody ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN mkdir --mode=777 /.config
