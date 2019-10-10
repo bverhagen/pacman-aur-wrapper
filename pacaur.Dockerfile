@@ -35,3 +35,7 @@ RUN pacman -Syu --needed --noconfirm git jq expac sudo && pacman -Scc --noconfir
 
 COPY --from=build-package /tmp/pacaur/*.tar.xz /tmp/
 RUN pushd tmp && pacman --noconfirm -U *.tar.xz
+
+# Enable building as the nobody user
+RUN usermod -e 2100-01-01 -- nobody
+RUN echo "nobody ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers

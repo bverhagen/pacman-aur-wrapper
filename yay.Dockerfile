@@ -36,6 +36,7 @@ RUN pushd tmp && pacman --noconfirm -U *.tar.xz
 RUN yay -S --needed --noconfirm --editor false --answerclean None --answeredit None --answerupgrade None --answerdiff None --save
 
 # Enable building as the nobody user
+RUN usermod -e 2100-01-01 -- nobody
 RUN echo "nobody ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN mkdir --mode=777 /.config
 RUN mkdir --mode=777 /.cache
