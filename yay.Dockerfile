@@ -38,3 +38,4 @@ RUN yay -S --needed --noconfirm --editor false --answerclean None --answeredit N
 # Enable building as the nobody user
 RUN echo "nobody ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN mkdir --mode=777 /.config
+RUN mkdir --mode=777 /.cache
