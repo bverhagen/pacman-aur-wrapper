@@ -31,7 +31,7 @@ RUN pacman -Syu --needed --noconfirm && pacman -Scc --noconfirm && rm -rf /var/l
 RUN pacman -Syu --needed --noconfirm git sudo && pacman -Scc --noconfirm && rm -rf /var/lib/pacman/sync/*
 
 COPY --from=build-package /tmp/yay/*.tar.xz /tmp
-RUN pushd tmp && pacman --noconfirm -U *.tar.xz
+RUN pushd tmp && pacman --noconfirm -U *.tar.xz && rm *.tar.xz
 
 RUN yay -S --needed --noconfirm --editor false --answerclean None --answeredit None --answerupgrade None --answerdiff None --save
 
