@@ -6,7 +6,8 @@ stages:
     stage: build
     image: docker:latest
     services:
-        - docker:dind
+        - name: docker:dind
+          command: ["--experimental"]
     variables:
         IMAGE: blaat
         WORKDIR: docker
@@ -15,7 +16,7 @@ stages:
         - docker login -u gitlab-ci-token -p "${CI_BUILD_TOKEN}" "${CI_REGISTRY}"
         - echo "Building image '${IMAGE}'"
         - cd ${WORKDIR}
-        - docker build --compress=true --force-rm=true --pull=true --no-cache=true --rm=true "--tag=${IMAGE}" "--file=${DOCKERFILE}" .
+        - docker build --squash=true --compress=true --force-rm=true --pull=true --no-cache=true --rm=true "--tag=${IMAGE}" "--file=${DOCKERFILE}" .
         - docker push ${IMAGE}
 
 .docker:upload: &docker_upload    
