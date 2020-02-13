@@ -1,11 +1,68 @@
 stages:
-    - trigger
+    - build
+    - publish
 
-docker-cloud:
-    image: pstauffer/curl
-    stage: trigger
+.build_image: &build_image
+    stage: build
+    image: docker:latest
+    services:
+        - docker:dind
+    variables:
+        IMAGE: blaat
+        WORKDIR: docker
+        DOCKERFILE: Dockerfile
     script:
-        - curl --request POST ${DOCKER_CLOUD_BUILD_TRIGGER}
+        - docker login -u gitlab-ci-token -p "${CI_BUILD_TOKEN}" "${CI_REGISTRY}"
+        - echo "Building image '${IMAGE}'"
+        - cd ${WORKDIR}
+        - docker build --compress=true --force-rm=true --pull=true --no-cache=true --rm=true "--tag=${IMAGE}" "--file=${DOCKERFILE}" .
+        - docker push ${IMAGE}
+
+.docker:upload: &docker_upload    
+    stage: publish
+    image: docker:latest    
+    dependencies: []
+    services:     
+        - docker:dind    
+    variables:    
+        SOURCE_IMAGE: "???"    
+        TARGET_IMAGE: "???"    
+    script:    
+        - docker login -u gitlab-ci-token -p "${CI_BUILD_TOKEN}" "${CI_REGISTRY}"    
+        - docker pull "${SOURCE_IMAGE}"    
+        - docker tag "${SOURCE_IMAGE}" "${TARGET_IMAGE}"    
+        - export CI_REGISTRY_USER=bverhagen    
+        - export CI_REGISTRY_PASSWORD=${DOCKER_HUB_TOKEN}    
+        - rm -f ~/.docker/config.json    
+        - docker login -u bverhagen -p "${DOCKER_HUB_TOKEN}" docker.io    
+        - docker push "${TARGET_IMAGE}"
+
+build:yay:
+    <<: *build_image
+    variables:
+        IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:yay
+        WORKDIR: .
+        DOCKERFILE: yay.Dockerfile
+
+build:pacaur:
+    <<: *build_image
+    variables:
+        IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:pacaur
+        WORKDIR: .
+        DOCKERFILE: pacaur.Dockerfile
+
+publish:yay:
+    <<: *docker_upload
+    variables:
+        SOURCE_IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:yay
+        TARGET_IMAGE: bverhagen/pacman-aur-wrapper:yay
     only:
         - master
-        - dev
+
+publish:pacaur:
+    <<: *docker_upload
+    variables:
+        SOURCE_IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:pacaur
+        TARGET_IMAGE: bverhagen/pacman-aur-wrapper:pacaur
+    only:
+        - master
