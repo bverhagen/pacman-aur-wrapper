@@ -1,4 +1,4 @@
-FROM archlinux/base AS build-package
+FROM archlinux AS build-package
 RUN pacman -Syu --needed --noconfirm # Avoid some issues with packages. E.g. updates on dependencies from pacman itself
 RUN pacman -Sy --needed --noconfirm base-devel git curl sudo
 
@@ -26,7 +26,7 @@ RUN mkdir -p /tmp/pacaur && cd /tmp/pacaur && . /etc/profile.d/perlbin.sh && cur
 
 
 
-FROM archlinux/base
+FROM archlinux
 COPY --from=build-package /etc/profile.d/editor.sh /etc/profile.d/
 COPY --from=build-package /etc/bash.bashrc /etc/
 COPY --from=build-package /etc/makepkg.conf /etc/
