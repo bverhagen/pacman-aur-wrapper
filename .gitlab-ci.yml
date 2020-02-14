@@ -1,6 +1,7 @@
 stages:
     - build
     - publish
+    - trigger
 
 .build_image: &build_image
     stage: build
@@ -65,5 +66,14 @@ publish:pacaur:
     variables:
         SOURCE_IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:pacaur
         TARGET_IMAGE: bverhagen/pacman-aur-wrapper:pacaur
+    only:
+        - master
+
+awesome-aur-wrapper:
+    stage: trigger
+    dependencies: []
+    trigger:
+        project: bverhagen/awesome-aur-wrapper
+        branch: master
     only:
         - master
