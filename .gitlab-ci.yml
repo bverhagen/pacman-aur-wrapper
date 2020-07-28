@@ -6,6 +6,7 @@ stages:
 .build_image: &build_image
     stage: build
     image: docker:latest
+    needs: []
     services:
         - name: docker:dind
           command: ["--experimental"]
@@ -23,7 +24,6 @@ stages:
 .docker:upload: &docker_upload    
     stage: publish
     image: docker:latest    
-    dependencies: []
     services:     
         - docker:dind    
     variables:    
@@ -60,6 +60,9 @@ publish:yay:
         TARGET_IMAGE: bverhagen/pacman-aur-wrapper:yay
     only:
         - master
+    needs:
+        - job: build:yay
+          artifacts: false
 
 publish:pacaur:
     <<: *docker_upload
@@ -68,10 +71,13 @@ publish:pacaur:
         TARGET_IMAGE: bverhagen/pacman-aur-wrapper:pacaur
     only:
         - master
+    needs:
+        - job: build:pacaur
+          artifacts: false
 
 awesome-aur-wrapper:
     stage: trigger
-    dependencies: []
+    needs: []
     trigger:
         project: bverhagen/awesome-aur-wrapper
         branch: master
