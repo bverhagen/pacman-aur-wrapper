@@ -53,6 +53,17 @@ build:pacaur:
         WORKDIR: .
         DOCKERFILE: pacaur.Dockerfile
 
+publish:latest:
+    <<: *docker_upload
+    variables:
+        SOURCE_IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:yay
+        TARGET_IMAGE: bverhagen/pacman-aur-wrapper:latest
+    only:
+        - master
+    needs:
+        - job: build:yay
+          artifacts: false
+
 publish:yay:
     <<: *docker_upload
     variables:
