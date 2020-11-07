@@ -53,6 +53,13 @@ build:pacaur:
         WORKDIR: .
         DOCKERFILE: pacaur.Dockerfile
 
+build:aura:
+    <<: *build_image
+    variables:
+        IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:pacaur
+        WORKDIR: .
+        DOCKERFILE: aura.Dockerfile
+
 publish:latest:
     <<: *docker_upload
     variables:
@@ -84,6 +91,17 @@ publish:pacaur:
         - master
     needs:
         - job: build:pacaur
+          artifacts: false
+
+publish:aura:
+    <<: *docker_upload
+    variables:
+        SOURCE_IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:aura
+        TARGET_IMAGE: bverhagen/pacman-aur-wrapper:aura
+    only:
+        - master
+    needs:
+        - job: build:aura
           artifacts: false
 
 awesome-aur-wrapper:
