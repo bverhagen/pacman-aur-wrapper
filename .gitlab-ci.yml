@@ -56,7 +56,7 @@ build:pacaur:
 build:aura:
     <<: *build_image
     variables:
-        IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:pacaur
+        IMAGE: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}:aura
         WORKDIR: .
         DOCKERFILE: aura.Dockerfile
 
