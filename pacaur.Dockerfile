@@ -1,6 +1,6 @@
 FROM archlinux AS build-package
 RUN pacman -Syu --needed --noconfirm # Avoid some issues with packages. E.g. updates on dependencies from pacman itself
-RUN pacman -Sy --needed --noconfirm base-devel git curl sudo
+RUN pacman -Sy --needed --noconfirm base-devel git curl sudo perl
 
 # Add a user to use in the docker container
 RUN groupadd -g 42 awesome && useradd -r -u 42 --create-home -g awesome awesome
@@ -18,6 +18,9 @@ COPY makepkg.conf /etc/makepkg.conf
 
 # Become the user
 USER awesome
+
+# pod2man fix
+ENV PATH $PATH:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
 
 # Install pacaur AUR helper
 RUN sudo pacman -Sy --needed --noconfirm expac jq meson
