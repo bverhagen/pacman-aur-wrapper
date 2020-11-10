@@ -103,12 +103,3 @@ publish:aura:
     needs:
         - job: build:aura
           artifacts: false
-
-awesome-aur-wrapper:
-    stage: trigger
-    needs: []
-    trigger:
-        project: bverhagen/awesome-aur-wrapper
-        branch: master
-    only:
-        - master
